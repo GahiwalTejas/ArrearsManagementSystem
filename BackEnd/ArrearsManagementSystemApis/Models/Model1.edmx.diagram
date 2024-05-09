@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="1e46a63c7dec4ee1a56f1200de10d606" Name="Diagram1">
+        <EntityTypeShape EntityType="ArrearsDbModel.Arrear" Width="1.5" PointX="7.25" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArrearsDbModel.Role" Width="1.5" PointX="1.125" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArrearsDbModel.Store" Width="1.5" PointX="5.25" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArrearsDbModel.User" Width="1.5" PointX="3.875" PointY="1.375" IsExpanded="true" />
+        <AssociationConnector Association="ArrearsDbModel.FK__Arrears__StoreId__72C60C4A" ManuallyRouted="false" />
+        <AssociationConnector Association="ArrearsDbModel.FK__Arrears__UserId__73BA3083" ManuallyRouted="false" />
+        <AssociationConnector Association="ArrearsDbModel.FK__Users__RoleId__398D8EEE" ManuallyRouted="false" />
+        <AssociationConnector Association="ArrearsDbModel.FK__Stores__UserId__3C69FB99" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
