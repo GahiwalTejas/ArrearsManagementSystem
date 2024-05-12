@@ -17,7 +17,7 @@ namespace ArrearsManagementSystemApis.Models
     {
         public ArrearsDbEntities()
             : base("name=ArrearsDbEntities")
-        {
+        {this.Configuration.LazyLoadingEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

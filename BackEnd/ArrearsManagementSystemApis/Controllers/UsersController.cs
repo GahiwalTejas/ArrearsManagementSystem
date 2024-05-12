@@ -12,6 +12,7 @@ using ArrearsManagementSystemApis.Models;
 
 namespace ArrearsManagementSystemApis.Controllers
 {
+    [RoutePrefix("api/users")]
     public class UsersController : ApiController
     {
         private ArrearsDbEntities db = new ArrearsDbEntities();
@@ -71,18 +72,58 @@ namespace ArrearsManagementSystemApis.Controllers
         }
 
         // POST: api/Users
-        [ResponseType(typeof(User))]
-        public IHttpActionResult PostUser(User user)
+        //[ResponseType(typeof(User))]
+        //public IHttpActionResult Registration(User user)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    db.Users.Add(user);
+        //    db.SaveChanges();
+
+        //    return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
+        //}
+
+        [HttpPost]
+        [Route("login")]
+
+        public IHttpActionResult Login([FromBody] User user)
+        {
+            var UserBy = (from users in db.Users
+                          where users.MoNumber == user.MoNumber && users.Password == user.Password
+                          select users).FirstOrDefault();
+
+            if (UserBy != null)
+            {
+                return Ok(UserBy);
+            }
+            else
+            {
+
+                return NotFound();
+            }
+
+
+
+        }
+
+
+        [HttpPost]
+        [Route("registration")]
+
+        public IHttpActionResult Registration([FromBody] User user)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest("error");
             }
-
             db.Users.Add(user);
-            db.SaveChanges();
+            if (db.SaveChanges() != 0)
+                return Ok("Registration Succesfully");
+            else return BadRequest("Mo Number Should be unique");
 
-            return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
         }
 
         // DELETE: api/Users/5
@@ -97,8 +138,8 @@ namespace ArrearsManagementSystemApis.Controllers
 
             db.Users.Remove(user);
             db.SaveChanges();
-
-            return Ok(user);
+            return
+CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
         }
 
         protected override void Dispose(bool disposing)
