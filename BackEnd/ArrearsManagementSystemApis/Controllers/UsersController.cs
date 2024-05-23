@@ -113,15 +113,44 @@ namespace ArrearsManagementSystemApis.Controllers
         [HttpPost]
         [Route("registration")]
 
-        public IHttpActionResult Registration([FromBody] User user)
+        public IHttpActionResult Registration([FromBody] SellerClass userSeller)
         {
-            if (!ModelState.IsValid)
+
+
+            User user = new User();
+            user.MoNumber = userSeller.MoNumber;
+            user.Password = userSeller.Password;
+            user.Name = userSeller.Name;
+            user.RoleId = userSeller.RoleId;
+
+
+
+
+                if (!ModelState.IsValid)
             {
                 return BadRequest("error");
             }
             db.Users.Add(user);
-            if (db.SaveChanges() != 0)
+
+
+            db.SaveChanges();
+            var UserBy = (from users in db.Users
+                          where users.MoNumber == user.MoNumber && users.Password == user.Password
+                          select users).FirstOrDefault();
+
+
+            Store store = new Store();
+            store.StoreName = userSeller.StoreName;
+            store.UserId = UserBy.Id;
+            db.Stores.Add(store);
+
+            db.SaveChanges();
+
+            if (db.SaveChanges() != 0) {
+            
                 return Ok("Registration Succesfully");
+            }
+               
             else return BadRequest("Mo Number Should be unique");
 
         }
