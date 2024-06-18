@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -12,6 +13,7 @@ using ArrearsManagementSystemApis.Models;
 
 namespace ArrearsManagementSystemApis.Controllers
 {
+    [RoutePrefix("api/Store")]
     public class StoresController : ApiController
     {
         private ArrearsDbEntities db = new ArrearsDbEntities();
@@ -70,19 +72,37 @@ namespace ArrearsManagementSystemApis.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+
         // POST: api/Stores
-        [ResponseType(typeof(Store))]
-        public IHttpActionResult PostStore(Store store)
+        //  [ResponseType(typeof(Store))]
+        [HttpGet]
+        [Route("search")]
+        public List<String> SearchStore( String keyword)
         {
-            if (!ModelState.IsValid)
+
+            //List<String> ListStores   = db.Stores.Find(store);
+            List<string> ListStores = new List<string>();
+            var resultContact = db.Stores
+           .Where(stores => stores.StoreName.StartsWith(keyword))
+           .Select(store => new
+           {
+               store.StoreName,
+           })
+           .ToList();
+            if (resultContact.Count == 0)
             {
-                return BadRequest(ModelState);
+                ListStores.Add("Not Found");
+                return ListStores;
+            }
+            else
+            {
+                foreach (var item in resultContact)
+                {
+                    ListStores.Add(item.StoreName);
+                }
             }
 
-            db.Stores.Add(store);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = store.StoreId }, store);
+            return ListStores;
         }
 
         // DELETE: api/Stores/5

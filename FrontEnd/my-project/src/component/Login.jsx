@@ -8,6 +8,7 @@ import Logo from "./Logo/Logo";
 import { login as authLogin } from "../store/authSlice";
 import { useDispatch } from "react-redux";
 import Toaster from "./toaster/Toaster"; // Import the Toaster component
+import { useSelector } from "react-redux";
 
 function Login() {
   const { register, handleSubmit } = useForm();
@@ -33,7 +34,7 @@ const handleClose=()=>{
       .then((resp) => resp.json())
       .then((resp) => {
         console.log(resp);
-        debugger
+        
         if (resp.Name) {
           dispatch(
             authLogin({
@@ -41,6 +42,7 @@ const handleClose=()=>{
                 name: resp.Name,
                 id: resp.Id,
                 MoNumber: resp.MoNumber,
+                RoleId:resp.RoleId
               },
             })
           );
@@ -52,13 +54,21 @@ const handleClose=()=>{
 
        },5000)
           console.log("after setShowToast")
-     //   return resp;
         } else {
           throw new Error("Invalid credentials");
         }
-      }).then(()=>{
+     return resp;
+      }).then((resp)=>{
+        
         setTimeout(() => {
-          navigate("/userInfo");
+      console.log(resp.RoleId);
+          if(resp.RoleId==2){
+            navigate("/lentTakenCustomers");
+
+          }
+        else{
+          navigate("/lentDetails");
+        }
         }, 2000); // Redirect after 3 seconds
       })
       .catch((err) => {

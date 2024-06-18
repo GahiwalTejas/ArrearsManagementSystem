@@ -71,6 +71,43 @@ namespace ArrearsManagementSystemApis.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+
+
+
+        [HttpGet]
+        [Route("search")]
+        public List<String> SearchStore(String keyword)
+        {
+
+            //List<String> ListStores   = db.Stores.Find(store);
+            List<string> ListUser = new List<string>();
+            var resultContact = db.Users
+           .Where(user => user.Name.StartsWith(keyword))
+           .Select(user => new
+           {
+               user.Name,
+           })
+           .ToList();
+            if (resultContact.Count == 0)
+            {
+                ListUser.Add("Not Found");
+                return ListUser;
+            }
+            else
+            {
+                foreach (var item in resultContact)
+                {
+                    ListUser.Add(item.Name);
+                }
+            }
+
+            return ListUser;
+        }
+
+
+
+
+
         // POST: api/Users
         //[ResponseType(typeof(User))]
         //public IHttpActionResult Registration(User user)
@@ -90,7 +127,7 @@ namespace ArrearsManagementSystemApis.Controllers
         [Route("login")]
 
         public IHttpActionResult Login([FromBody] User user)
-        {
+            {
             var UserBy = (from users in db.Users
                           where users.MoNumber == user.MoNumber && users.Password == user.Password
                           select users).FirstOrDefault();

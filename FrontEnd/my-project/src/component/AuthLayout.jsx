@@ -6,6 +6,8 @@ export default function Protected({ children, authentication = true }) {
   const navigate = useNavigate();
   const [loader, setLoader] = useState(true);
   const authStatus = useSelector((state) => state.auth.status);
+  //const roleId = useSelector((state) => state.auth.userData.RoleId);
+
 
   useEffect(() => {
     console.log("inside auth");
